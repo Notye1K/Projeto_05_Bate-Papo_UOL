@@ -9,6 +9,9 @@ body {
     background-color: #E5E5E5;
     font-family: 'Roboto', sans-serif;
 }
+strong {
+    font-weight: bold;
+}
 
 
 header {

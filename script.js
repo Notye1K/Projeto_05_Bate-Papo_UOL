@@ -1,7 +1,23 @@
+function testName(){
+    let name = document.querySelector('.screenOfName input').value
+    let promisse = axios.post('https://mock-api.driven.com.br/api/v4/uol/participants',{name})
+    promisse.then(vanishScreenOfName)
+    promisse.catch(erro)
+}
+function vanishScreenOfName(answer){
+    let screen = document.querySelector('.screenOfName')
+    screen.classList.add('vanishDisplay')
+}
+function erro(answer){
+    document.querySelector('.screenOfName input').value= 'Digite outro nome'
+}
+
 function load(){
     const promisse = axios.get("https://mock-api.driven.com.br/api/v4/uol/messages")
     promisse.then(loadMessages)
 }
+
+
 function loadMessages (answer) {
     // console.log(answer.data)
     // console.log('aaaaaaaaaaa')
@@ -42,6 +58,6 @@ function loadMessages (answer) {
     }
 }
 
-load()
-setInterval(load,3000)
+//load()
+//setInterval(load,3000)
 let last = document.querySelectorAll('main .message')[document.querySelectorAll('main .message').length-1]

@@ -7,17 +7,18 @@ function testName(){
 function vanishScreenOfName(answer){
     let screen = document.querySelector('.screenOfName')
     screen.classList.add('vanishDisplay')
+    load()
+    setInterval(load,3000)
 }
 function erro(answer){
     document.querySelector('.screenOfName input').value= 'Digite outro nome'
 }
 
+
 function load(){
     const promisse = axios.get("https://mock-api.driven.com.br/api/v4/uol/messages")
     promisse.then(loadMessages)
 }
-
-
 function loadMessages (answer) {
     // console.log(answer.data)
     // console.log('aaaaaaaaaaa')
@@ -58,6 +59,52 @@ function loadMessages (answer) {
     }
 }
 
-//load()
-//setInterval(load,3000)
+
+function PopUpScreen(){
+    document.querySelector('.chooseAPerson').classList.remove('vanishDisplay')
+}
+function clickBlackScreen(){
+    document.querySelector('.chooseAPerson').classList.add('vanishDisplay')
+}
+
+
+function chooseAPerson(element){
+    const people = document.querySelector('.people')
+    const NumberOfChecks = people.querySelectorAll('.check')
+    for (let i = 0; i < NumberOfChecks.length; i++) {
+        NumberOfChecks[i].classList.add('vanishDisplay')
+    }
+    element.querySelector('.vanishDisplay').classList.remove('vanishDisplay')
+    if(element === document.querySelector('.line')){
+        chooseTodos()
+    }
+
+}
+function chooseTodos(){
+    const NumberOfChecks = document.querySelectorAll('.visibility .check')
+        for (let i = 0; i < NumberOfChecks.length; i++) {
+            NumberOfChecks[i].classList.add('vanishDisplay')
+        }
+    const element = document.querySelector('.visibility .line')
+    element.querySelector('.vanishDisplay').classList.remove('vanishDisplay')
+}
+function chooseAVisibility(element){
+    const todos = document.querySelector('.line .check').classList.contains('vanishDisplay')
+    if(todos){
+        const NumberOfChecks = document.querySelectorAll('.visibility .check')
+        for (let i = 0; i < NumberOfChecks.length; i++) {
+            NumberOfChecks[i].classList.add('vanishDisplay')
+        }
+        element.querySelector('.vanishDisplay').classList.remove('vanishDisplay')
+    }
+    else if (element == document.querySelectorAll('.visibility .line')[1] ){
+        element.classList.add('deniedCheck')
+        setTimeout(delay, 500)
+    }
+}
+function delay(){
+    document.querySelector('.deniedCheck').classList.remove('deniedCheck')
+}
+
+
 let last = document.querySelectorAll('main .message')[document.querySelectorAll('main .message').length-1]

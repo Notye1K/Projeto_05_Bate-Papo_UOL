@@ -14,15 +14,59 @@
     <title>Bate-Papo</title>
 </head>
 <body>
-    <div class="screenOfName">
+    <div class="screenOfName vanishDisplay">
         <img src="logo_2.png" alt="logo uol">
         <input type="text" placeholder="Digite seu nome" data-identifier="enter-name">
         <div class="button" onclick="testName()" data-identifier="start">Entrar</div>
     </div>
 
+    <div class="chooseAPerson vanishDisplay">
+        <div class="blackScreen" onclick="clickBlackScreen()"></div>
+        <div class="rightSide">
+            <span>Escolha um contato para enviar mensagem:</span>
+            <div class="people">
+                <div class="line" onclick="chooseAPerson(this)">
+                    <div class="withoutCheck">
+                        <ion-icon name="people"></ion-icon>
+                        <h1>Todos</h1>
+                    </div>
+                    <ion-icon class="check" name="checkmark"></ion-icon>
+                </div>
+
+                <div class="PeopleOn">
+                    <div class="line" onclick="chooseAPerson(this)">
+                        <div class="withoutCheck">
+                            <ion-icon name="person-circle"></ion-icon>
+                            <h1>joas</h1>
+                        </div>
+                        <ion-icon class="check vanishDisplay" name="checkmark"></ion-icon>
+                    </div>
+                </div>
+            </div>
+
+            <span>Escolha a visibilidade:</span>
+            <div class="visibility">
+                <div class="line" onclick="chooseAVisibility(this)">
+                    <div class="withoutCheck">
+                        <ion-icon name="lock-open"></ion-icon>
+                        <h1>Público</h1>
+                    </div>
+                    <ion-icon class="check" name="checkmark"></ion-icon>
+                </div>
+                <div class="line" onclick="chooseAVisibility(this)">
+                    <div class="withoutCheck">
+                        <ion-icon name="lock-closed"></ion-icon>
+                        <h1>Reservadamente</h1>
+                    </div>
+                    <ion-icon class="check vanishDisplay" name="checkmark"></ion-icon>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <header>
         <img src="logo_2.png" alt="logo uol">
-        <ion-icon name="people"></ion-icon>
+        <ion-icon name="people" onclick="PopUpScreen()"></ion-icon>
     </header>
 
     <main>

@@ -14,7 +14,7 @@
     <title>Bate-Papo</title>
 </head>
 <body>
-    <div class="screenOfName vanishDisplay">
+    <div class="screenOfName">
         <img src="logo_2.png" alt="logo uol">
         <input type="text" placeholder="Digite seu nome" data-identifier="enter-name">
         <div class="button" onclick="testName()" data-identifier="start">Entrar</div>
@@ -86,7 +86,7 @@
 
     <footer>
         <input type="text" placeholder="Escreva aqui...">
-        <ion-icon name="paper-plane-outline"></ion-icon>
+        <ion-icon onclick="sendMessage()" name="paper-plane-outline"></ion-icon>
     </footer>
 
     <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>

@@ -1,7 +1,7 @@
-let nameUser = ''
+
 function testName(){
     nameUser = document.querySelector('.screenOfName input').value
-    let promisse = axios.post('https://mock-api.driven.com.br/api/v4/uol/participants',{nameUser})
+    let promisse = axios.post('https://mock-api.driven.com.br/api/v4/uol/participants',{name: nameUser})
     promisse.then(vanishScreenOfName)
     promisse.catch(erro)
     console.log('carregando')
@@ -14,7 +14,7 @@ function vanishScreenOfName(answer){
     setInterval(keepingPage,5000)
 }
 function keepingPage(){
-    axios.post('https://mock-api.driven.com.br/api/v4/uol/status',{nameUser})
+    axios.post('https://mock-api.driven.com.br/api/v4/uol/status',{name: nameUser})
 }
 function erro(answer){
     document.querySelector('.screenOfName input').placeholder= 'Digite outro nome'
@@ -37,24 +37,38 @@ function loadMessages (answer) {
     for (let i = 0; i<answer.data.length; i++) {
         if(answer.data[i].type=='status'){
             main.innerHTML += `
-            <div class="message movimentMessage">
+            <div class="message movimentMessage" data-identifier="message">
                 <span class="time">${answer.data[i].time}</span>
                 <span class="text"><strong>${answer.data[i].from}</strong> ${answer.data[i].text}</span>
             </div>`
         }
         else if(answer.data[i].type == 'message'){
-            main.innerHTML += `
-            <div class="message normalMessage">
-                <span class="time">${answer.data[i].time}</span>
-                <span class="text"><strong>${answer.data[i].from}</strong> para <strong>${answer.data[i].to}</strong> ${answer.data[i].text}</span>
-            </div>`
+            if (answer.data[i].to === 'nome do destinatário (Todos se não for um específico)'){
+                main.innerHTML += `
+                <div class="message normalMessage" data-identifier="message">
+                    <span class="time">${answer.data[i].time}</span>
+                    <span class="text"><strong>${answer.data[i].from}</strong> para <strong>${'Todos'}</strong> ${answer.data[i].text}</span>
+                </div>`
+            }
+            else{
+                main.innerHTML += `
+                <div class="message normalMessage" data-identifier="message">
+                    <span class="time">${answer.data[i].time}</span>
+                    <span class="text"><strong>${answer.data[i].from}</strong> para <strong>${answer.data[i].to}</strong> ${answer.data[i].text}</span>
+                </div>`
+            }
         }
         else {
-            main.innerHTML += `
-            <div class="message directMessage">
-                <span class="time">${answer.data[i].time}</span>
-                <span class="text"><strong>${answer.data[i].from}</strong> reservadamente para <strong>${answer.data[i].to}</strong> ${answer.data[i].text}</span>
-            </div>`
+            if (answer.data[i].type === 'private_message' && answer.data[i].to !== 'Todos' && answer.data[i].to !== nameUser && answer.data[i].from !== nameUser ){
+                continue
+            }
+            else{
+                    main.innerHTML += `
+                <div class="message directMessage" data-identifier="message">
+                    <span class="time">${answer.data[i].time}</span>
+                    <span class="text"><strong>${answer.data[i].from}</strong> reservadamente para <strong>${answer.data[i].to}</strong> ${answer.data[i].text}</span>
+                </div>`
+            }
         }
     }
     //console.log(last)
@@ -74,9 +88,9 @@ function participants(answer) {
     let PeopleOn = document.querySelector('.PeopleOn')
     PeopleOn.innerHTML = ""
     for (let i = 0; i<answer.data.length; i++) {
-        // if do meu nome
+        //if (type === 'private_message' && to !== 'Todos' && (to !== nameUser || from) )
         PeopleOn.innerHTML += `
-        <div class="line" onclick="chooseAPerson(this)">
+        <div class="line" onclick="chooseAPerson(this)" data-identifier="participant">
             <div class="withoutCheck">
                 <ion-icon name="person-circle"></ion-icon>
                 <h1>${answer.data[i].name}</h1>
@@ -85,9 +99,16 @@ function participants(answer) {
         </div>`
     }
     document.querySelector('.chooseAPerson').classList.remove('vanishDisplay')
+    if (intervalOfParticipants === 1){
+        intervalOfParticipants = setInterval(PopUpScreen,10000)
+        console.log('ativei intervalo')
+    }
 }
 function clickBlackScreen(){
     document.querySelector('.chooseAPerson').classList.add('vanishDisplay')
+    clearInterval(intervalOfParticipants)
+    console.log('parei intervalo')
+    intervalOfParticipants = 1
 }
 
 
@@ -99,11 +120,12 @@ function chooseAPerson(element){
         NumberOfChecks[i].classList.remove('selected')
     }
     element.querySelector('.vanishDisplay').classList.remove('vanishDisplay')
-    element.querySelector('.vanishDisplay').classList.add('selected')
-    // to = document.querySelector('.selected').parentElement.querySelector('h1').innerHTML
-    // if(element === document.querySelector('.line')){
-    //     chooseTodos()
-    // }
+    element.querySelector('.check').classList.add('selected')
+    to = document.querySelector('.selected').parentElement.querySelector('h1').innerHTML
+    document.querySelector('.infoOfSending .to').innerHTML = to
+    if(element === document.querySelector('.line')){
+        chooseTodos()
+    }
 
 }
 function chooseTodos(){
@@ -114,8 +136,11 @@ function chooseTodos(){
         }
     const element = document.querySelector('.visibility .line')
     element.querySelector('.vanishDisplay').classList.remove('vanishDisplay')
-    element.querySelector('.vanishDisplay').classList.add('selected')
+    element.querySelector('.check').classList.add('selected')
     to = "Todos"
+    type = 'message'
+    document.querySelector('.infoOfSending .to').innerHTML = 'Todos'
+    document.querySelector('.infoOfSending .type').innerHTML = '(Público)'
 }
 function chooseAVisibility(element){
     const todos = document.querySelector('.line .check').classList.contains('vanishDisplay')
@@ -126,14 +151,16 @@ function chooseAVisibility(element){
             NumberOfChecks[i].classList.remove('selected')
         }
         element.querySelector('.vanishDisplay').classList.remove('vanishDisplay')
-        element.querySelector('.vanishDisplay').classList.add('selected')
-        // type = document.querySelector('.visibility .selected').parentElement.querySelector('h1').innerHTML
-        // if (type === "Todos"){
-        //     type = "Todos"
-        // }
-        // else {
-        //     type = 'private_message'
-        // }
+        element.querySelector('.check').classList.add('selected')
+        type = document.querySelector('.visibility .selected').parentElement.querySelector('h1').innerHTML
+        if (type === "Público"){
+            type = "message"
+            document.querySelector('.infoOfSending .type').innerHTML = '(Público)'
+        }
+        else {
+            type = 'private_message'
+            document.querySelector('.infoOfSending .type').innerHTML = '(Reservadamente)'
+        }
     }
     else if (element == document.querySelectorAll('.visibility .line')[1] ){
         element.classList.add('deniedCheck')
@@ -160,10 +187,30 @@ function certo(){
     console.log('foi')
 }
 function errou(resposta){
+    window.location.reload()
     console.log(resposta.response)
 }
 
-let to
-let type
+function ifEnter1(e){
+    var key = e.which || e.keyCode;
+    if (key == 13) { // codigo da tecla enter
+      // colocas aqui a tua função a rodar
+      testName()
+    }
+}
+function ifEnter2(e){
+    var key = e.which || e.keyCode;
+    if (key == 13) { // codigo da tecla enter
+      // colocas aqui a tua função a rodar
+      sendMessage()
+    }
+}
+
+
+let to = 'Todos'
+let type = 'message'
 let last = document.querySelectorAll('main .message')[document.querySelectorAll('main .message').length-1].innerHTML
+let intervalOfParticipants = 1
+let nameUser = ''
+//nome do destinatário (Todos se não for um específico)
 

@@ -218,16 +218,22 @@ footer {
     height: 80px;
     width: 100%;
     padding: 0 20px;
+    padding-top: 15px;
     background: #FFFFFF;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05);
 
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;    
 
     position: fixed;
     bottom: 0;
     left: 0;
+}
+.inputAndButton{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 input {
     width: 80%;
@@ -246,6 +252,19 @@ input::placeholder {
     font-size: 18px;
     line-height: 21px;
     color: #000000;
+}
+.infoOfSending{
+    height: 30px;
+
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 25px;
+    /* or 139% */
+    color: #AEAEAE;
+}
+.infoOfSending .to{
+    overflow: hidden;
 }
 
 .vanishDisplay{

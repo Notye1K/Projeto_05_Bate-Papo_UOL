@@ -17,7 +17,7 @@
     <div class="screenOfName">
         <img src="logo_2.png" alt="logo uol">
         <input type="text" placeholder="Digite seu nome" data-identifier="enter-name">
-        <div class="button" onclick="testName()" data-identifier="start">Entrar</div>
+        <div class="button" onclick="testName()" onkeyup="ifEnter1(event)" data-identifier="start">Entrar</div>
     </div>
 
     <div class="chooseAPerson vanishDisplay">
@@ -25,7 +25,7 @@
         <div class="rightSide">
             <span>Escolha um contato para enviar mensagem:</span>
             <div class="people">
-                <div class="line" onclick="chooseAPerson(this)">
+                <div class="line" onclick="chooseAPerson(this)" data-identifier="participant">
                     <div class="withoutCheck">
                         <ion-icon name="people"></ion-icon>
                         <h1>Todos</h1>
@@ -46,14 +46,14 @@
 
             <span>Escolha a visibilidade:</span>
             <div class="visibility">
-                <div class="line" onclick="chooseAVisibility(this)">
+                <div class="line" onclick="chooseAVisibility(this)" data-identifier="visibility">
                     <div class="withoutCheck">
                         <ion-icon name="lock-open"></ion-icon>
                         <h1>Público</h1>
                     </div>
                     <ion-icon class="check" name="checkmark"></ion-icon>
                 </div>
-                <div class="line" onclick="chooseAVisibility(this)">
+                <div class="line" onclick="chooseAVisibility(this)" data-identifier="visibility">
                     <div class="withoutCheck">
                         <ion-icon name="lock-closed"></ion-icon>
                         <h1>Reservadamente</h1>
@@ -85,8 +85,13 @@
     </main>
 
     <footer>
-        <input type="text" placeholder="Escreva aqui...">
-        <ion-icon onclick="sendMessage()" name="paper-plane-outline"></ion-icon>
+        <div class="inputAndButton">
+            <input type="text" placeholder="Escreva aqui...">
+            <ion-icon onclick="sendMessage()" onkeyup="ifEnter2()" data-identifier="send-message" name="paper-plane-outline"></ion-icon>
+        </div>
+        <div class="infoOfSending">
+            Enviando para <span class="to">Todos</span> <span class="type">(Público)</span>
+        </div>
     </footer>
 
     <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>

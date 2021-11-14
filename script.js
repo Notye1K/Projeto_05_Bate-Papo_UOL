@@ -4,6 +4,12 @@ function testName(){
     let promisse = axios.post('https://mock-api.driven.com.br/api/v4/uol/participants',{name: nameUser})
     promisse.then(vanishScreenOfName)
     promisse.catch(erro)
+    let screen = document.querySelector(".screenOfName")
+    screen.innerHTML = `
+    <img src="logo_2.png" alt="logo uol">
+    <img class="gif" src="spinning-loading.gif" alt="loading">
+    <div class="loading">Entrando ...</div>
+    `
     console.log('carregando')
 }
 function vanishScreenOfName(answer){
@@ -17,7 +23,16 @@ function keepingPage(){
     axios.post('https://mock-api.driven.com.br/api/v4/uol/status',{name: nameUser})
 }
 function erro(answer){
+    let screen = document.querySelector(".screenOfName")
+    screen.innerHTML = `
+    <img src="logo_2.png" alt="logo uol">
+    <input type="text" placeholder="Digite seu nome" onkeyup="ifEnter1(event)" data-identifier="enter-name">
+    <div class="button" onclick="testName()" data-identifier="start">Entrar</div>
+    `
     document.querySelector('.screenOfName input').placeholder= 'Digite outro nome'
+    document.querySelector('.screenOfName input').value= ''
+    console.log(answer.response)
+    alert('Tente outro nome')
 }
 
 
@@ -26,11 +41,6 @@ function load(){
     promisse.then(loadMessages)
 }
 function loadMessages (answer) {
-    // console.log(answer.data)
-    // console.log('aaaaaaaaaaa')
-    // console.log(answer[0])
-    // console.log('bbbbbbbbbbbbb')
-    // console.log(answer.data[0].text)
     
     let main = document.querySelector('main')
     main.innerHTML = ""
@@ -59,16 +69,16 @@ function loadMessages (answer) {
             }
         }
         else {
-            if (answer.data[i].type === 'private_message' && answer.data[i].to !== 'Todos' && answer.data[i].to !== nameUser && answer.data[i].from !== nameUser ){
-                continue
-            }
-            else{
+            // if (answer.data[i].type === 'private_message' && answer.data[i].to !== 'Todos' && answer.data[i].to !== nameUser && answer.data[i].from !== nameUser ){
+            //     continue
+            // }
+            // else{
                     main.innerHTML += `
                 <div class="message directMessage" data-identifier="message">
                     <span class="time">${answer.data[i].time}</span>
                     <span class="text"><strong>${answer.data[i].from}</strong> reservadamente para <strong>${answer.data[i].to}</strong> ${answer.data[i].text}</span>
                 </div>`
-            }
+           // }
         }
     }
     //console.log(last)
@@ -86,17 +96,29 @@ function PopUpScreen(){
 }
 function participants(answer) {
     let PeopleOn = document.querySelector('.PeopleOn')
+    let check = document.querySelector('.selected').parentElement.querySelector('.lineName').innerHTML
     PeopleOn.innerHTML = ""
     for (let i = 0; i<answer.data.length; i++) {
-        //if (type === 'private_message' && to !== 'Todos' && (to !== nameUser || from) )
-        PeopleOn.innerHTML += `
+        if (check === answer.data[i].name){
+            PeopleOn.innerHTML += `
         <div class="line" onclick="chooseAPerson(this)" data-identifier="participant">
             <div class="withoutCheck">
                 <ion-icon name="person-circle"></ion-icon>
-                <h1>${answer.data[i].name}</h1>
+                <div class="lineName">${answer.data[i].name}</div>
             </div>
-            <ion-icon class="check vanishDisplay" name="checkmark"></ion-icon>
+            <ion-icon class="check selected" name="checkmark"></ion-icon>
         </div>`
+        }
+        else{
+            PeopleOn.innerHTML += `
+            <div class="line" onclick="chooseAPerson(this)" data-identifier="participant">
+                <div class="withoutCheck">
+                    <ion-icon name="person-circle"></ion-icon>
+                    <div class="lineName">${answer.data[i].name}</div>
+                </div>
+                <ion-icon class="check vanishDisplay" name="checkmark"></ion-icon>
+            </div>`
+        }
     }
     document.querySelector('.chooseAPerson').classList.remove('vanishDisplay')
     if (intervalOfParticipants === 1){
@@ -121,7 +143,7 @@ function chooseAPerson(element){
     }
     element.querySelector('.vanishDisplay').classList.remove('vanishDisplay')
     element.querySelector('.check').classList.add('selected')
-    to = document.querySelector('.selected').parentElement.querySelector('h1').innerHTML
+    to = document.querySelector('.selected').parentElement.querySelector('.lineName').innerHTML
     document.querySelector('.infoOfSending .to').innerHTML = to
     if(element === document.querySelector('.line')){
         chooseTodos()
@@ -192,19 +214,21 @@ function errou(resposta){
 }
 
 function ifEnter1(e){
-    var key = e.which || e.keyCode;
+    var key = e.keyCode;
     if (key == 13) { // codigo da tecla enter
       // colocas aqui a tua função a rodar
       testName()
     }
 }
 function ifEnter2(e){
-    var key = e.which || e.keyCode;
+    var key = e.keyCode;
     if (key == 13) { // codigo da tecla enter
       // colocas aqui a tua função a rodar
       sendMessage()
     }
 }
+
+// continuar com check msm dps de atualizdo
 
 
 let to = 'Todos'

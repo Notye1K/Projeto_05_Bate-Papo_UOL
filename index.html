@@ -16,8 +16,8 @@
 <body>
     <div class="screenOfName">
         <img src="logo_2.png" alt="logo uol">
-        <input type="text" placeholder="Digite seu nome" data-identifier="enter-name">
-        <div class="button" onclick="testName()" onkeyup="ifEnter1(event)" data-identifier="start">Entrar</div>
+        <input type="text" placeholder="Digite seu nome" onkeyup="ifEnter1(event)" data-identifier="enter-name">
+        <div class="button" onclick="testName()" data-identifier="start">Entrar</div>
     </div>
 
     <div class="chooseAPerson vanishDisplay">
@@ -28,9 +28,9 @@
                 <div class="line" onclick="chooseAPerson(this)" data-identifier="participant">
                     <div class="withoutCheck">
                         <ion-icon name="people"></ion-icon>
-                        <h1>Todos</h1>
+                        <div class="lineName">Todos</div>
                     </div>
-                    <ion-icon class="check" name="checkmark"></ion-icon>
+                    <ion-icon class="check selected" name="checkmark"></ion-icon>
                 </div>
 
                 <div class="PeopleOn">
@@ -86,11 +86,11 @@
 
     <footer>
         <div class="inputAndButton">
-            <input type="text" placeholder="Escreva aqui...">
-            <ion-icon onclick="sendMessage()" onkeyup="ifEnter2()" data-identifier="send-message" name="paper-plane-outline"></ion-icon>
+            <input type="text" placeholder="Escreva aqui..." onkeyup="ifEnter2(event)">
+            <ion-icon onclick="sendMessage()" data-identifier="send-message" name="paper-plane-outline"></ion-icon>
         </div>
         <div class="infoOfSending">
-            Enviando para <span class="to">Todos</span> <span class="type">(Público)</span>
+            Enviando <div class="bug">para</div> <div class="to"> Todos </div> <div class="type"> (Público) </div>
         </div>
     </footer>
 

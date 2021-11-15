@@ -69,16 +69,16 @@ function loadMessages (answer) {
             }
         }
         else {
-            // if (answer.data[i].type === 'private_message' && answer.data[i].to !== 'Todos' && answer.data[i].to !== nameUser && answer.data[i].from !== nameUser ){
-            //     continue
-            // }
-            // else{
+            if (answer.data[i].type === 'private_message' && answer.data[i].to !== 'Todos' && answer.data[i].to !== nameUser && answer.data[i].from !== nameUser ){
+                continue
+            }
+            else{
                     main.innerHTML += `
                 <div class="message directMessage" data-identifier="message">
                     <span class="time">${answer.data[i].time}</span>
                     <span class="text"><strong>${answer.data[i].from}</strong> reservadamente para <strong>${answer.data[i].to}</strong> ${answer.data[i].text}</span>
                 </div>`
-           // }
+            }
         }
     }
     //console.log(last)
@@ -96,7 +96,13 @@ function PopUpScreen(){
 }
 function participants(answer) {
     let PeopleOn = document.querySelector('.PeopleOn')
-    let check = document.querySelector('.selected').parentElement.querySelector('.lineName').innerHTML
+    let check
+    if (document.querySelector('.selected') === null) {
+        check = 'Todos'
+    }
+    else{
+        check = document.querySelector('.selected').parentElement.querySelector('.lineName').innerHTML
+    }
     PeopleOn.innerHTML = ""
     for (let i = 0; i<answer.data.length; i++) {
         if (check === answer.data[i].name){
@@ -195,20 +201,18 @@ function delay(){
 
 
 function sendMessage(){
-    //const to = document.querySelector('.selected').parentElement.querySelector('h1').innerHTML
     const text = document.querySelector('footer input').value
-    //const type = document.querySelector('.visibility .selected').parentElement.querySelector('h1').innerHTML
 
     const message = {from: nameUser, to, text, type}
     const promisse = axios.post('https://mock-api.driven.com.br/api/v4/uol/messages', message)
-    promisse.then(certo)
-    promisse.catch(errou)
+    promisse.then(messageOk)
+    promisse.catch(messageKo)
     document.querySelector('footer input').value = ''
 }
-function certo(){
+function messageOk(){
     console.log('foi')
 }
-function errou(resposta){
+function messageKo(resposta){
     window.location.reload()
     console.log(resposta.response)
 }
@@ -227,8 +231,6 @@ function ifEnter2(e){
       sendMessage()
     }
 }
-
-// continuar com check msm dps de atualizdo
 
 
 let to = 'Todos'

@@ -137,6 +137,7 @@ img {
     display: flex;
     flex-direction: column;
     /* align-items: center; */
+    overflow-y: scroll;
 }
 .chooseAPerson span {
     font-style: normal;
@@ -211,7 +212,9 @@ main{
     line-height: 16px;
 
     overflow:hidden;
-    overflow-wrap: break-word;
+}
+.message .text {
+    overflow-wrap: anywhere;
 }
 .normalMessage {
     background: white;

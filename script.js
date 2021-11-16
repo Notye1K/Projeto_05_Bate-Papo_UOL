@@ -57,14 +57,14 @@ function loadMessages (answer) {
                 main.innerHTML += `
                 <div class="message normalMessage" data-identifier="message">
                     <span class="time">${answer.data[i].time}</span>
-                    <span class="text"><strong>${answer.data[i].from}</strong> para <strong>${'Todos'}</strong> ${answer.data[i].text}</span>
+                    <span class="text"><strong>${answer.data[i].from}</strong> para <strong>${'Todos'}</strong>: ${answer.data[i].text}</span>
                 </div>`
             }
             else{
                 main.innerHTML += `
                 <div class="message normalMessage" data-identifier="message">
                     <span class="time">${answer.data[i].time}</span>
-                    <span class="text"><strong>${answer.data[i].from}</strong> para <strong>${answer.data[i].to}</strong> ${answer.data[i].text}</span>
+                    <span class="text"><strong>${answer.data[i].from}</strong> para <strong>${answer.data[i].to}</strong>: ${answer.data[i].text}</span>
                 </div>`
             }
         }
@@ -76,7 +76,7 @@ function loadMessages (answer) {
                     main.innerHTML += `
                 <div class="message directMessage" data-identifier="message">
                     <span class="time">${answer.data[i].time}</span>
-                    <span class="text"><strong>${answer.data[i].from}</strong> reservadamente para <strong>${answer.data[i].to}</strong> ${answer.data[i].text}</span>
+                    <span class="text"><strong>${answer.data[i].from}</strong> reservadamente para <strong>${answer.data[i].to}</strong>: ${answer.data[i].text}</span>
                 </div>`
             }
         }
@@ -97,11 +97,11 @@ function PopUpScreen(){
 function participants(answer) {
     let PeopleOn = document.querySelector('.PeopleOn')
     let check
-    if (document.querySelector('.selected') === null) {
-        check = 'Todos'
+    if (document.querySelector('.PeopleOn .selected') === null) {
+        check = null
     }
-    else{
-        check = document.querySelector('.selected').parentElement.querySelector('.lineName').innerHTML
+    else {
+        check = document.querySelector('.PeopleOn .selected').parentElement.querySelector('.lineName').innerHTML
     }
     PeopleOn.innerHTML = ""
     for (let i = 0; i<answer.data.length; i++) {
